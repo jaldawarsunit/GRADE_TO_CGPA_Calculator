@@ -75,7 +75,7 @@ document.getElementById('semester').addEventListener('change', function() {
                 table += `
                     <td>
                         <label for="grade-${sem}-${index}" class="form-label">${subject}</label>
-                        <input type="text" class="form-control" id="grade-${sem}-${index}" required>
+                        <input type="text" class="form-control"  id="grade-${sem}-${index}" required>
                     </td>
                 `;
             });
@@ -89,7 +89,7 @@ document.getElementById('semester').addEventListener('change', function() {
             subjectsDiv.innerHTML += `
                 <div class="mb-3">
                     <label for="grade-${selectedSemester}-${index}" class="form-label">${subject}</label>
-                    <input type="text" class="form-control" id="grade-${selectedSemester}-${index}" required>
+                    <input type="text" placeholder="Enter Grade (EX, AA, AB, etc)" class="form-control" id="grade-${selectedSemester}-${index}" required>
                 </div>
             `;
         });
