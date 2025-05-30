@@ -32,80 +32,77 @@ const gradeToPoint = grade => {
 };
 
 const populateSubjects = () => {
-  let selectedSemester = document.getElementById('semester').value;
-  let subjectsDiv = document.getElementById('subjects');
+  const selectedSemester = document.getElementById('semester').value;
+  const subjectsDiv = document.getElementById('subjects');
   subjectsDiv.innerHTML = '';
 
   const gradeOptions = ["EX", "AA", "AB", "BB", "BC", "CC", "CD", "DD", "DE", "EE", "FF"];
 
-  if (selectedSemester === 'all') {
-    Object.keys(subjects).forEach(sem => {
-      let semHeader = document.createElement('h5');
-      semHeader.textContent = `Semester ${sem}`;
-      semHeader.classList.add('mt-3', 'text-primary', 'fw-bold');
-      subjectsDiv.appendChild(semHeader);
+  let semestersToShow = [];
 
-      subjects[sem].forEach((subject, index) => {
-        let div = document.createElement('div');
-        div.classList.add('mb-2');
-        div.innerHTML = `
-          <label class="form-label">${subject}</label>
-          <select id="grade-${sem}-${index}" class="form-select">
-            <option value="">Select Grade</option>
-            ${gradeOptions.map(grade => `<option value="${grade}">${grade}</option>`).join('')}
-          </select>
-        `;
-        subjectsDiv.appendChild(div);
-      });
-    });
+  if (selectedSemester === 'all') {
+    semestersToShow = Object.keys(subjects);
+  } else if (selectedSemester === 'dall') {
+    // Skip semesters 1 and 2
+    semestersToShow = Object.keys(subjects).filter(sem => sem !== '1' && sem !== '2');
   } else {
-    subjects[selectedSemester].forEach((subject, index) => {
+    semestersToShow = [selectedSemester];
+  }
+
+  semestersToShow.forEach(sem => {
+    let semHeader = document.createElement('h5');
+    semHeader.textContent = `Semester ${sem}`;
+    semHeader.classList.add('mt-3', 'text-primary', 'fw-bold');
+    subjectsDiv.appendChild(semHeader);
+
+    subjects[sem].forEach((subject, index) => {
       let div = document.createElement('div');
-      div.classList.add('mb-3');
+      div.classList.add('mb-2');
       div.innerHTML = `
         <label class="form-label">${subject}</label>
-        <select id="grade-${selectedSemester}-${index}" class="form-select">
+        <select id="grade-${sem}-${index}" class="form-select">
           <option value="">Select Grade</option>
           ${gradeOptions.map(grade => `<option value="${grade}">${grade}</option>`).join('')}
         </select>
       `;
       subjectsDiv.appendChild(div);
     });
-  }
+  });
 };
 
 const calculateCGPA = () => {
-  let selectedSemester = document.getElementById('semester').value;
+  const selectedSemester = document.getElementById('semester').value;
   let totalPoints = 0;
   let totalCredits = 0;
 
+  let semestersToCalculate = [];
+
   if (selectedSemester === 'all') {
-    Object.keys(subjects).forEach(sem => {
-      subjects[sem].forEach((subject, index) => {
-        let grade = document.getElementById(`grade-${sem}-${index}`).value;
-        if (grade) {
-          totalPoints += gradeToPoint(grade) * credits[sem][index];
-          totalCredits += credits[sem][index];
-        }
-      });
-    });
+    semestersToCalculate = Object.keys(subjects);
+  } else if (selectedSemester === 'dall') {
+    semestersToCalculate = Object.keys(subjects).filter(sem => sem !== '1' && sem !== '2');
   } else {
-    subjects[selectedSemester].forEach((subject, index) => {
-      let grade = document.getElementById(`grade-${selectedSemester}-${index}`).value;
-      if (grade) {
-        totalPoints += gradeToPoint(grade) * credits[selectedSemester][index];
-        totalCredits += credits[selectedSemester][index];
-      }
-    });
+    semestersToCalculate = [selectedSemester];
   }
 
+  semestersToCalculate.forEach(sem => {
+    subjects[sem].forEach((subject, index) => {
+      const grade = document.getElementById(`grade-${sem}-${index}`).value;
+      if (grade) {
+        totalPoints += gradeToPoint(grade) * credits[sem][index];
+        totalCredits += credits[sem][index];
+      }
+    });
+  });
+
+  const resultDiv = document.getElementById('result');
   if (totalCredits === 0) {
-    document.getElementById('result').innerHTML = `<h3 class="text-danger">Please fill in grades!</h3>`;
+    resultDiv.innerHTML = `<h3 class="text-danger">Please fill in grades!</h3>`;
     return;
   }
 
-  let cgpa = totalPoints / totalCredits;
-  document.getElementById('result').innerHTML = `<h3>Your CGPA is: ${cgpa.toFixed(2)}</h3>`;
+  const cgpa = totalPoints / totalCredits;
+  resultDiv.innerHTML = `<h3 class="text-success fw-bold">Your CGPA is: ${cgpa.toFixed(2)}</h3>`;
 };
 
 document.getElementById('semester').addEventListener('change', populateSubjects);
