@@ -3,7 +3,7 @@ const subjects = {
   2: ["Em-2", "Physics", "Graphic", "CS", "EEE", "Phy-lab", "Grap-lab", "cs lab", "Seminar"],
   3: ["EM-3", "IPC", "CAO", "OOP-c++", "DSA", "OOP Lab", "DSA Lab", "Seminar-1"],
   4: ["OB", "Pro.&sat.", "Dis. Math", "DAA", "Web-Tech", "DAA-LAB", "Web-Lab", "Seminar-2"],
-  5: ["SE", "CNIP", "ITSM", "JAVA", "CNIP-Lab", "SE & JV LAB", "Mini-project-1"]
+  5: ["SE", "CNIP", "ITSM", "JAVA", "CNIP-Lab", "SE & JV LAB", "Mini-project-1"],
   6: ["OS","DBMS", "ST/DWDM","ERP","DBMS-lab","OS-lab","Mini-Project-2"]
 };
 
@@ -12,7 +12,7 @@ const credits = {
   2: [4, 4, 2, 2, 2, 1, 2, 1, 1],
   3: [4, 2, 4, 4, 4, 1, 1, 2],
   4: [3, 4, 4, 4, 3, 1, 1, 2],
-  5: [4, 4, 3, 3, 1, 2, 4]
+  5: [4, 4, 3, 3, 1, 2, 4],
   6: [4, 4, 3, 3, 1, 2, 4]
 };
 
@@ -109,4 +109,5 @@ const calculateCGPA = () => {
 
 document.getElementById('semester').addEventListener('change', populateSubjects);
 document.addEventListener('DOMContentLoaded', populateSubjects);
+
 
