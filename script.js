@@ -104,10 +104,17 @@ const calculateCGPA = () => {
   }
 
   const cgpa = totalPoints / totalCredits;
-  resultDiv.innerHTML = `<h3 class="text-success fw-bold">Your CGPA is: ${cgpa.toFixed(2)}</h3>`;
+  if(selectedSemester === 'all' || selectedSemester === 'dall') {
+    resultDiv.innerHTML = `<h3 class="text-success fw-bold">Your CGPA for selected semesters is: ${cgpa.toFixed(2)}</h3>`;
+  }else{
+    resultDiv.innerHTML = `<h3 class="text-success fw-bold">Your SGPA for Semester ${selectedSemester} is: ${cgpa.toFixed(2)}</h3>`;
+  }
+
+  
 };
 
 document.getElementById('semester').addEventListener('change', populateSubjects);
 document.addEventListener('DOMContentLoaded', populateSubjects);
+
 
 
